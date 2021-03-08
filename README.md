@@ -4,4 +4,4 @@
 - Cors policy
 - NLog logging
 - repository pattern including manager
-
+- Sql Azure Database
