@@ -36,9 +36,14 @@ namespace CompaniesEmployees
         {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
+            } else {
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
