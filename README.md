@@ -2,3 +2,4 @@
 
 - extension methods
 - Cors policy
+- NLog logging
