@@ -31,6 +31,8 @@ namespace CompaniesEmployees
         {
             services.ConfigureCors();
             services.ConfigureLoggerService();
+            services.ConfigureSqlContext(Configuration);
+
 
             services.AddControllers();
         }
