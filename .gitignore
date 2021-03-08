@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /logs
 /internal_logs
+/CompaniesEmployees/Migrations
