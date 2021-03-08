@@ -3,3 +3,5 @@
 - extension methods
 - Cors policy
 - NLog logging
+- repository pattern including manager
+
