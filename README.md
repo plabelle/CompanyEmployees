@@ -1,7 +1,7 @@
-# A .Net 5 basic structure demo application 
-
-- extension methods
-- Cors policy
-- NLog logging
-- repository pattern including manager
+# A .Net 5 demo application with below services
+- Extension Methods
+- Cors
+- NLog
+- Repository Pattern
 - Sql Azure Database
+- Data Transfer Object (DTO)
