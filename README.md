@@ -5,3 +5,4 @@
 - Repository Pattern
 - Sql Azure Database
 - Data Transfer Object (DTO)
+- Content negotiation (XML, CSV)
