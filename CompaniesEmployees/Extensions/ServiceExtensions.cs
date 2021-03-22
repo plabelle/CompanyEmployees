@@ -4,6 +4,7 @@ using LoggerService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Repository;
 
 namespace CompaniesEmployees.Extensions
@@ -30,5 +31,12 @@ namespace CompaniesEmployees.Extensions
 
         public static IMvcBuilder AddCustomCSVFormater(this IMvcBuilder builder) =>
             builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(s => {
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "Company Employees", Version = "v1" });
+            });
+        }
     }
 }

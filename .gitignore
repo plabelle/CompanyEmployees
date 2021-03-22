@@ -341,3 +341,4 @@ healthchecksdb
 /logs
 /internal_logs
 /CompaniesEmployees/Migrations
+/CompaniesEmployees/appsettings.Development.json

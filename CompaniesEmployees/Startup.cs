@@ -32,6 +32,7 @@ namespace CompaniesEmployees
             services.Configure<ApiBehaviorOptions>(options => {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.ConfigureSwagger();
 
             services.AddControllers(config => {
                 config.RespectBrowserAcceptHeader = true;
@@ -60,6 +61,11 @@ namespace CompaniesEmployees
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(s => {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Employees");
+            });
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
