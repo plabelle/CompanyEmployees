@@ -1,3 +1,4 @@
+using CompaniesEmployees.ActionFilters;
 using CompaniesEmployees.Extensions;
 using Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +34,9 @@ namespace CompaniesEmployees
                 options.SuppressModelStateInvalidFilter = true;
             });
             services.ConfigureSwagger();
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateCompanyExistsAttribute>();
+            services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
 
             services.AddControllers(config => {
                 config.RespectBrowserAcceptHeader = true;
