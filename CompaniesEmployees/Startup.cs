@@ -1,13 +1,17 @@
 using CompaniesEmployees.ActionFilters;
 using CompaniesEmployees.Extensions;
+using CompaniesEmployees.Utility;
 using Contracts;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using Repository.DataShaping;
 using System.IO;
 
 namespace CompaniesEmployees
@@ -37,6 +41,13 @@ namespace CompaniesEmployees
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateCompanyExistsAttribute>();
             services.AddScoped<ValidateEmployeeForCompanyExistsAttribute>();
+            services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
+            services.AddScoped<ValidateMediaTypeAttribute>();
+            services.AddScoped<EmployeeLinks>();
+
+            services.Configure<ApiBehaviorOptions>(options => {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             services.AddControllers(config => {
                 config.RespectBrowserAcceptHeader = true;
@@ -44,6 +55,8 @@ namespace CompaniesEmployees
             }).AddNewtonsoftJson()
               .AddXmlDataContractSerializerFormatters()
               .AddCustomCSVFormater();
+
+            services.AddCustomMediaTypes();
 
         }
 
@@ -61,6 +74,10 @@ namespace CompaniesEmployees
             app.UseStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
 
             app.UseRouting();
 
