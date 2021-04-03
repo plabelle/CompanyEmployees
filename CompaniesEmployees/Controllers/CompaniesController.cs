@@ -4,6 +4,7 @@ using CompaniesEmployees.ModelBinders;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,8 +14,10 @@ using System.Threading.Tasks;
 
 namespace CompaniesEmployees.Controllers
 {
+    [ApiVersion("1.0")]
     [Route("api/companies")]
     [ApiController]
+    //[ResponseCache(CacheProfileName = "120SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class CompaniesController : ControllerBase
     {
@@ -29,7 +32,7 @@ namespace CompaniesEmployees.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);
@@ -38,6 +41,8 @@ namespace CompaniesEmployees.Controllers
         }
 
         [HttpGet("{id}", Name = "CompanyById")]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
+        [HttpCacheValidation(MustRevalidate = false)]
         public async Task<IActionResult> GetCompany(Guid id)
         {
             var company = await _repository.Company.GetCompanyAsync(id, trackChanges: false);
@@ -69,7 +74,7 @@ namespace CompaniesEmployees.Controllers
             return Ok(companiesToReturn);
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateCompany")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {
@@ -130,6 +135,13 @@ namespace CompaniesEmployees.Controllers
             await _repository.SaveAsync();
 
             return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetCompaniesOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+            return Ok();
         }
 
     }

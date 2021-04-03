@@ -49,9 +49,15 @@ namespace CompaniesEmployees
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            services.AddHttpContextAccessor();
+            services.ConfigureVersioning();
+            services.ConfigureResponseCaching();
+            services.ConfigureHttpCacheHeaders();
+
             services.AddControllers(config => {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
+                config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
             }).AddNewtonsoftJson()
               .AddXmlDataContractSerializerFormatters()
               .AddCustomCSVFormater();
@@ -78,6 +84,9 @@ namespace CompaniesEmployees
             app.UseForwardedHeaders(new ForwardedHeadersOptions {
                 ForwardedHeaders = ForwardedHeaders.All
             });
+
+            app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
 
             app.UseRouting();
 
