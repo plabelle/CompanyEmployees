@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace CompaniesEmployees.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/companies")]
+    [Route("api/v1/companies")]
     [ApiController]
     //[ResponseCache(CacheProfileName = "120SecondsDuration")]
     [ApiExplorerSettings(GroupName = "v1")]
