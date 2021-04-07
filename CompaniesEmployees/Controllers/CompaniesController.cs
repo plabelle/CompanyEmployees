@@ -15,11 +15,8 @@ using System.Threading.Tasks;
 
 namespace CompaniesEmployees.Controllers
 {
-    //[ApiVersion("1.0")]
     [Route("api/companies")]
     [ApiController]
-    //[ResponseCache(CacheProfileName = "120SecondsDuration")]
-    //[ApiExplorerSettings(GroupName = "v1")]
     public class CompaniesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -33,10 +30,6 @@ namespace CompaniesEmployees.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Gets the list of all companies
-        /// </summary>
-        /// <returns>The companies list</returns>
         [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
@@ -79,14 +72,7 @@ namespace CompaniesEmployees.Controllers
             return Ok(companiesToReturn);
         }
 
-        /// <summary>
-        /// Creates a newly created company
-        /// </summary>
-        /// <param name="company"></param>
-        /// <returns>A newly created company</returns>
-        /// <response code="201">Returns the newly created item</response>
         [HttpPost(Name = "CreateCompany")]
-        [ProducesResponseType(201)]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {

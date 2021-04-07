@@ -51,26 +51,7 @@ namespace CompaniesEmployees.Extensions
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(s => {
-                s.SwaggerDoc("v1", new OpenApiInfo {
-                    Title = "Company Employees V1", 
-                    Version = "v1",
-                    Description = "CompanyEmployees API by CodeMaze",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact {
-                        Name = "John Doe",
-                        Email = "John.Doe@gmail.com",
-                        Url = new Uri("https://twitter.com/johndoe"),
-                    },
-                    License = new OpenApiLicense {
-                        Name = "CompanyEmployes API LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
-                });
-                //s.SwaggerDoc("v2", new OpenApiInfo { Title = "Company Employees V2", Version = "v2" });
-
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //s.IncludeXmlComments(xmlPath);
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "Company Employees", Version = "v1" });
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
                     In = ParameterLocation.Header,
@@ -79,6 +60,7 @@ namespace CompaniesEmployees.Extensions
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
+
                 s.AddSecurityRequirement(new OpenApiSecurityRequirement() {
                     { new OpenApiSecurityScheme {
                         Reference = new OpenApiReference {
@@ -115,17 +97,17 @@ namespace CompaniesEmployees.Extensions
             });
         }
 
-        public static void ConfigureVersioning(this IServiceCollection services)
-        {
-            services.AddApiVersioning(opt => {
-                opt.ReportApiVersions = true;
-                opt.AssumeDefaultVersionWhenUnspecified = true;
-                opt.DefaultApiVersion = new ApiVersion(1, 0);
-                opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
-                opt.Conventions.Controller<CompaniesController>().HasApiVersion(new ApiVersion(1, 0));
-                opt.Conventions.Controller<CompaniesV2Controller>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
-            });
-        }
+        //public static void ConfigureVersioning(this IServiceCollection services)
+        //{
+        //    services.AddApiVersioning(opt => {
+        //        opt.ReportApiVersions = true;
+        //        opt.AssumeDefaultVersionWhenUnspecified = true;
+        //        opt.DefaultApiVersion = new ApiVersion(1, 0);
+        //        opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+        //        opt.Conventions.Controller<CompaniesController>().HasApiVersion(new ApiVersion(1, 0));
+        //        opt.Conventions.Controller<CompaniesV2Controller>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
+        //    });
+        //}
 
         public static void ConfigureResponseCaching(this IServiceCollection services) => services.AddResponseCaching();
 

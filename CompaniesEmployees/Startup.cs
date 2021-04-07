@@ -57,7 +57,7 @@ namespace CompaniesEmployees
             });
 
             services.AddHttpContextAccessor();
-            services.ConfigureVersioning();
+            //services.ConfigureVersioning();
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
 
@@ -110,7 +110,7 @@ namespace CompaniesEmployees
 
             app.UseSwagger();
             app.UseSwaggerUI(s => {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Employees V1");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Employees");
                 //s.SwaggerEndpoint("/swagger/v2/swagger.json", "Company Employees V2");
             });
 
