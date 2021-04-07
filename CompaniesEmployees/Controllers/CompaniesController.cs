@@ -19,7 +19,7 @@ namespace CompaniesEmployees.Controllers
     [Route("api/companies")]
     [ApiController]
     //[ResponseCache(CacheProfileName = "120SecondsDuration")]
-    [ApiExplorerSettings(GroupName = "v1")]
+    //[ApiExplorerSettings(GroupName = "v1")]
     public class CompaniesController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

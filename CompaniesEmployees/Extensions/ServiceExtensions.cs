@@ -66,7 +66,7 @@ namespace CompaniesEmployees.Extensions
                         Url = new Uri("https://example.com/license"),
                     }
                 });
-                s.SwaggerDoc("v2", new OpenApiInfo { Title = "Company Employees V2", Version = "v2" });
+                //s.SwaggerDoc("v2", new OpenApiInfo { Title = "Company Employees V2", Version = "v2" });
 
                 //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
