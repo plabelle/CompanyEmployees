@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using CompaniesEmployees.ActionFilters;
 using CompaniesEmployees.Extensions;
 using CompaniesEmployees.Utility;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
+using Repository;
 using Repository.DataShaping;
 using System.IO;
 
@@ -44,6 +46,11 @@ namespace CompaniesEmployees
             services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
             services.AddScoped<ValidateMediaTypeAttribute>();
             services.AddScoped<EmployeeLinks>();
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+            services.AddMemoryCache();
+            services.ConfigureRateLimitingOptions();
+            services.AddHttpContextAccessor();
 
             services.Configure<ApiBehaviorOptions>(options => {
                 options.SuppressModelStateInvalidFilter = true;
@@ -53,6 +60,12 @@ namespace CompaniesEmployees
             services.ConfigureVersioning();
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
+
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+
+            services.AddAuthentication();
+            services.ConfigureIdentity();
 
             services.AddControllers(config => {
                 config.RespectBrowserAcceptHeader = true;
@@ -88,13 +101,17 @@ namespace CompaniesEmployees
             app.UseResponseCaching();
             app.UseHttpCacheHeaders();
 
+            app.UseIpRateLimiting();
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwagger();
             app.UseSwaggerUI(s => {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Employees");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Employees V1");
+                s.SwaggerEndpoint("/swagger/v2/swagger.json", "Company Employees V2");
             });
 
             app.UseEndpoints(endpoints => {

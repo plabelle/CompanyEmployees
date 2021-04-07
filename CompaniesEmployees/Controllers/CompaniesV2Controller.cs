@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace CompaniesEmployees.Controllers
 {
-    [ApiVersion("2.0")]
-    [Route("api/v2/companies")]
+    //[ApiVersion("2.0")]
+    [Route("api/companies")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v2")]
     public class CompaniesV2Controller : ControllerBase
     {
         private readonly IRepositoryManager _repository;
