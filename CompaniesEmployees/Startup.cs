@@ -111,7 +111,6 @@ namespace CompaniesEmployees
             app.UseSwagger();
             app.UseSwaggerUI(s => {
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Company Employees");
-                //s.SwaggerEndpoint("/swagger/v2/swagger.json", "Company Employees V2");
             });
 
             app.UseEndpoints(endpoints => {
