@@ -50,7 +50,9 @@ namespace CompaniesEmployees.Extensions
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(s => {
-                s.SwaggerDoc("v1", new OpenApiInfo { Title = "Company Employees", Version = "v1" });
+                s.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "Company Employees API", Version = "v1", Description = "Login with UserName: jDoe & Password: Password1000"
+                });
 
                 var securitySchema = new OpenApiSecurityScheme {
                     Description = "JWT Auth Bearer Scheme",
