@@ -39,7 +39,7 @@ namespace CompaniesEmployees.Extensions
 
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<RepositoryContext>(opts =>
-                opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("CompanyEmployees")));
+                opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("CompaniesEmployees")));
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -52,28 +52,23 @@ namespace CompaniesEmployees.Extensions
             services.AddSwaggerGen(s => {
                 s.SwaggerDoc("v1", new OpenApiInfo { Title = "Company Employees", Version = "v1" });
 
-                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-                    In = ParameterLocation.Header,
-                    Description = "Place to add JWT with Bearer",
+                var securitySchema = new OpenApiSecurityScheme {
+                    Description = "JWT Auth Bearer Scheme",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-
-                s.AddSecurityRequirement(new OpenApiSecurityRequirement() {
-                    { new OpenApiSecurityScheme {
-                        Reference = new OpenApiReference {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Name = "Bearer",
-                    },
-                        new List<string>()
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
                     }
-                });
+                };
+
+                s.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement { { securitySchema, new[] { "Bearer" } } };
+                s.AddSecurityRequirement(securityRequirement);
             });
-
-
         }
 
         public static void AddCustomMediaTypes(this IServiceCollection services)
@@ -167,6 +162,7 @@ namespace CompaniesEmployees.Extensions
                     options.TokenValidationParameters = new TokenValidationParameters {
                         ValidateIssuer = true,
                         ValidateAudience = true,
+                        ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
                         ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
